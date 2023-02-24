@@ -5,7 +5,7 @@ import { useQuery } from "@apollo/client";
 
 import { List } from "antd";
 
-import { GET_ALL_CARS_FROM_DB, GET_MANY_CARS_FROM_DB } from "../../../Queries/queries";
+import { GET_ALL_PERSONS_FROM_DB } from "../../../Queries/queries";
 import CarCard from "./CarCard";
 
 const getStyles = () => ({
@@ -27,27 +27,24 @@ const PersonCard = (props) => {
   const [lastName] = useState(props.lastName);
   const [cars] = useState(props.cars)
 
-  const { loading, error, data } = useQuery(GET_ALL_CARS_FROM_DB);
-
-  if (loading) return <p>Loading...</p>;
-  if (error) return <p>Error : {error.message}</p>;
-
-  console.log(data.getManyCarsFromDb);
+  console.log(cars)
 
   return (
     <Card style={styles.cardLayout} title={`${firstName} ${lastName}`}>
-      <List style={styles.listLayout}>
-            <List.Item key={id}>
-              <CarCard
-                key={id}
-                carId={id}
-                year={year}
-                make={make}
-                model={model}
-                price={price}
-                ownerId={personId}
-              />
-            </List.Item>
+      <List style={styles.listLayout} dataSource={cars} renderItem={(item) => (
+          <List.Item key={id}>
+            <CarCard
+              key={item.id}
+              carId={item.id}
+              year={item.year}
+              make={item.make}
+              model={item.model}
+              price={item.price}
+              ownerId={item.personId}
+            />
+          </List.Item>
+
+      )}>
       </List>
     </Card>
   );
