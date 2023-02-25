@@ -2,22 +2,25 @@ import { useState } from "react";
 
 import { Button, Form, Input } from "antd";
 import { useMutation } from "@apollo/client";
-import { ADD_PERSON_TO_DB } from "../Queries/queries";
+import { ADD_CAR_TO_DB } from "../Queries/queries";
 
 const AddCar = () => {
-  const [id] = useState("4");
-  const [addCarMutation] = useMutation(ADD_PERSON_TO_DB);
+  const [id] = useState("20");
+  const [addCarMutation] = useMutation(ADD_CAR_TO_DB);
 
   const [form] = Form.useForm();
 
   const onFinish = (values) => {
-    const { firstName, lastName } = values;
+    const { year, make, model, price} = values;
 
     addCarMutation({
       variables: {
-        id,
-        firstName,
-        lastName,
+        id: id,
+        year,
+        make,
+        model,
+        price,
+        personId: "5",
       },
     });
   };
@@ -26,7 +29,7 @@ const AddCar = () => {
     <div>
       <h2>Add Car</h2>
       <Form
-        name="add-contact-form"
+        name="add-car-form"
         form={form}
         layout="inline"
         onFinish={onFinish}

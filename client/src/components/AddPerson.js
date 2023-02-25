@@ -6,16 +6,16 @@ import { ADD_PERSON_TO_DB } from "../Queries/queries";
 
 const AddPerson = () => {
   const [id] = useState("4");
-  const [addPersonMutation] = useMutation(ADD_PERSON_TO_DB);
+  const [addPersonToDb] = useMutation(ADD_PERSON_TO_DB);
 
   const [form] = Form.useForm();
 
   const onFinish = (values) => {
     const { firstName, lastName } = values;
 
-    addPersonMutation({
+    addPersonToDb({
       variables: {
-        id,
+        id: id,
         firstName,
         lastName,
       },
@@ -24,7 +24,7 @@ const AddPerson = () => {
 
   return (
     <div>
-    <h2>Add Person</h2>
+      <h2>Add Person</h2>
       <Form
         name="add-contact-form"
         form={form}
@@ -34,6 +34,7 @@ const AddPerson = () => {
         style={{ marginBottom: "40px" }}
       >
         <Form.Item
+          label="First Name"
           name="firstName"
           rules={[{ required: true, message: "Please input your first name!" }]}
         >
@@ -41,6 +42,7 @@ const AddPerson = () => {
         </Form.Item>
 
         <Form.Item
+          label="Last Name"
           name="lastName"
           rules={[{ required: true, message: "Please input your last name!" }]}
         >
@@ -48,6 +50,7 @@ const AddPerson = () => {
         </Form.Item>
 
         <Form.Item shouldUpdate={true}>
+        {/* <Form.Item> */}
           {() => (
             <Button type="primary" htmlType="submit">
               Add Contact

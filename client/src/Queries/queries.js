@@ -32,8 +32,8 @@ const GET_ALL_CARS_FROM_DB = gql`
 `;
 
 const ADD_PERSON_TO_DB = gql`
-  mutation AddPerson($id: String!, $firstName: String!, $lastName: String!) {
-    addPerson(id: $id, firstName: $firstName, lastName: $lastName) {
+  mutation AddPersonToDb($id: String!, $firstName: String!, $lastName: String!) {
+    addPersonToDb(id: $id, firstName: $firstName, lastName: $lastName) {
       id
       firstName
       lastName
@@ -42,7 +42,7 @@ const ADD_PERSON_TO_DB = gql`
 `;
 
 const ADD_CAR_TO_DB = gql`
-  mutation AddCar(
+  mutation addCarToDb(
     $id: String!
     $year: String!
     $make: String!
@@ -50,7 +50,7 @@ const ADD_CAR_TO_DB = gql`
     $price: String!
     $personId: String!
   ) {
-    addCar(
+    addCarToDb(
       id: $id
       year: $year
       make: $make
