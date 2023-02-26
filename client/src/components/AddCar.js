@@ -1,26 +1,45 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useMutation, useQuery } from "@apollo/client";
 
 import { Button, Form, Input } from "antd";
-import { useMutation } from "@apollo/client";
-import { ADD_CAR_TO_DB } from "../Queries/queries";
+import { v4 as uuidv4 } from "uuid";
 
-const AddCar = () => {
-  const [id] = useState("20");
+import { GET_ALL_PERSONS_FROM_DB, ADD_CAR_TO_DB } from "../Queries/queries";
+import Dropdown from "./listing/OwnerDropdown";
+
+const AddCar = (props) => {
+  const [id] = useState(uuidv4());
   const [addCarMutation] = useMutation(ADD_CAR_TO_DB);
+  const { loading, error, data } = useQuery(GET_ALL_PERSONS_FROM_DB);
+
+  const [dropDownList, setDropDownList] = useState([]);
+  const [dropDownValue, setDropdownValue] = useState({});
 
   const [form] = Form.useForm();
 
+  useEffect(() => {
+    if (data) {
+      setDropDownList(
+        data.getAllPersonsFromDb.map(({ id, firstName, lastName }) => {
+          return { value: id, label: `${firstName} ${lastName}` };
+        })
+      );
+      setDropdownValue(dropDownList[0]);
+    }
+  }, [data]);
+
+  //Execute AddCar mutation
   const onFinish = (values) => {
-    const { year, make, model, price} = values;
+    const { year, make, model, price } = values;
 
     addCarMutation({
       variables: {
-        id: id,
+        id,
         year,
         make,
         model,
         price,
-        personId: "5",
+        personId: "1",
       },
     });
   };
@@ -50,6 +69,14 @@ const AddCar = () => {
 
         <Form.Item name="price" rules={[{ required: true, message: "Price" }]}>
           <Input placeholder="Price $" />
+        </Form.Item>
+
+        <Form.Item name="personId" rules={[{ required: true, message: "Pick Owner" }]}>
+          <Dropdown
+            onChange={setDropdownValue}
+            dropDownOptionList={dropDownList}
+            defaultValue={dropDownValue}
+          />
         </Form.Item>
 
         <Form.Item shouldUpdate={true}>

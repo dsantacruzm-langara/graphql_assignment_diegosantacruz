@@ -1,11 +1,13 @@
 import { useState } from "react";
+import { useMutation } from "@apollo/client";
 
 import { Button, Form, Input } from "antd";
-import { useMutation } from "@apollo/client";
+import { v4 as uuidv4 } from 'uuid'
+
 import { ADD_PERSON_TO_DB } from "../Queries/queries";
 
 const AddPerson = () => {
-  const [id] = useState("4");
+  const [id] = useState(uuidv4());
   const [addPersonToDb] = useMutation(ADD_PERSON_TO_DB);
 
   const [form] = Form.useForm();
@@ -15,7 +17,7 @@ const AddPerson = () => {
 
     addPersonToDb({
       variables: {
-        id: id,
+        id,
         firstName,
         lastName,
       },
