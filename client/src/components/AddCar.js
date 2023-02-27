@@ -13,7 +13,7 @@ const AddCar = (props) => {
   const { loading, error, data } = useQuery(GET_ALL_PERSONS_FROM_DB);
 
   const [dropDownList, setDropDownList] = useState([]);
-  const [dropDownValue, setDropdownValue] = useState({});
+  const [dropDownValue, setDropDownValue] = useState({});
 
   const [form] = Form.useForm();
 
@@ -24,13 +24,12 @@ const AddCar = (props) => {
           return { value: id, label: `${firstName} ${lastName}` };
         })
       );
-      setDropdownValue(dropDownList[0]);
     }
   }, [data]);
 
   //Execute AddCar mutation
   const onFinish = (values) => {
-    const { year, make, model, price } = values;
+    const { year, make, model, price, personId } = values;
 
     addCarMutation({
       variables: {
@@ -39,10 +38,14 @@ const AddCar = (props) => {
         make,
         model,
         price,
-        personId: "1",
+        personId,
       },
     });
   };
+
+  // const onChangeDropdownValue = (value) => {
+  //   setDropDownValue(value);
+  // };
 
   return (
     <div>
@@ -71,11 +74,14 @@ const AddCar = (props) => {
           <Input placeholder="Price $" />
         </Form.Item>
 
-        <Form.Item name="personId" rules={[{ required: true, message: "Pick Owner" }]}>
+        <Form.Item
+          name="personId"
+          rules={[{ required: true, message: "Pick Owner" }]}
+        >
           <Dropdown
-            onChange={setDropdownValue}
+            onChange={setDropDownValue}
             dropDownOptionList={dropDownList}
-            defaultValue={dropDownValue}
+            defaultListValue={dropDownValue}
           />
         </Form.Item>
 

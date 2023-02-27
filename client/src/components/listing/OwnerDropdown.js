@@ -17,7 +17,6 @@ const OwnerDropdown = (props) => {
 
   return (
     <Select
-      defaultValue="Bill"
       style={{
         width: 120,
       }}
