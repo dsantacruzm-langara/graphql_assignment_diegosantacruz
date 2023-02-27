@@ -7,8 +7,7 @@ import { v4 as uuidv4 } from "uuid";
 import { GET_ALL_PERSONS_FROM_DB, ADD_CAR_TO_DB } from "../Queries/queries";
 import Dropdown from "./listing/OwnerDropdown";
 
-const AddCar = (props) => {
-  const [id] = useState(uuidv4());
+const AddCar = () => {
   const [addCarMutation] = useMutation(ADD_CAR_TO_DB);
   const { loading, error, data } = useQuery(GET_ALL_PERSONS_FROM_DB);
 
@@ -33,19 +32,37 @@ const AddCar = (props) => {
 
     addCarMutation({
       variables: {
-        id,
-        year,
-        make,
-        model,
-        price,
-        personId,
+        id: uuidv4(),
+        year: "1980",
+        make: "Delorean",
+        model: "TT DMC",
+        price: "700000",
+        personId: "1",
+      },
+      update: (cache, { data: { ...addCarMutation } }) => {
+        console.log(addCarMutation);
+        const data = cache.readQuery({ query: GET_ALL_PERSONS_FROM_DB });
+        console.log(data);
+        const personsCarsList = data.getAllPersonsFromDb.map((person) => {
+          if (person.id === addCarMutation.personId) {
+            return {
+              ...person,
+              cars: [...person.cars, { ...addCarMutation }],
+            };
+          }
+          return person;
+        });
+
+        cache.writeQuery({
+          query: GET_ALL_PERSONS_FROM_DB,
+          data: {
+            ...data,
+            getAllPersonsFromDb: [...personsCarsList],
+          },
+        });
       },
     });
   };
-
-  // const onChangeDropdownValue = (value) => {
-  //   setDropDownValue(value);
-  // };
 
   return (
     <div>
@@ -57,6 +74,7 @@ const AddCar = (props) => {
         onFinish={onFinish}
         size="large"
         style={{ marginBottom: "40px" }}
+        autoComplete="off"
       >
         <Form.Item name="year" rules={[{ required: true, message: "Year" }]}>
           <Input placeholder="Year" />

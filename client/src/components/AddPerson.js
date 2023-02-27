@@ -2,12 +2,11 @@ import { useState } from "react";
 import { useMutation } from "@apollo/client";
 
 import { Button, Form, Input } from "antd";
-import { v4 as uuidv4 } from 'uuid'
+import { v4 as uuidv4 } from "uuid";
 
-import { ADD_PERSON_TO_DB } from "../Queries/queries";
+import { ADD_PERSON_TO_DB, GET_ALL_PERSONS_FROM_DB } from "../Queries/queries";
 
 const AddPerson = () => {
-  const [id] = useState(uuidv4());
   const [addPersonToDb] = useMutation(ADD_PERSON_TO_DB);
 
   const [form] = Form.useForm();
@@ -17,9 +16,23 @@ const AddPerson = () => {
 
     addPersonToDb({
       variables: {
-        id,
+        id: uuidv4(),
         firstName,
         lastName,
+      },
+      update: (cache, { data: { addPersonToDb } }) => {
+        const data = cache.readQuery({ query: GET_ALL_PERSONS_FROM_DB });
+        console.log(addPersonToDb);
+        cache.writeQuery({
+          query: GET_ALL_PERSONS_FROM_DB,
+          data: {
+            ...data,
+            getAllPersonsFromDb: [
+              ...data.getAllPersonsFromDb,
+              { ...addPersonToDb, cars: [] },
+            ],
+          },
+        });
       },
     });
   };
@@ -34,6 +47,7 @@ const AddPerson = () => {
         onFinish={onFinish}
         size="large"
         style={{ marginBottom: "40px" }}
+        autoComplete="off"
       >
         <Form.Item
           label="First Name"
@@ -52,7 +66,7 @@ const AddPerson = () => {
         </Form.Item>
 
         <Form.Item shouldUpdate={true}>
-        {/* <Form.Item> */}
+          {/* <Form.Item> */}
           {() => (
             <Button type="primary" htmlType="submit">
               Add Contact
