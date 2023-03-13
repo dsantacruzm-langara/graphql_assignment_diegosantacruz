@@ -39,7 +39,7 @@ const AddCar = () => {
         price: "700000",
         personId: "1",
       },
-      update: (cache, { data: { ...addCarMutation } }) => {
+      update: (cache, { data: { addCarMutation } }) => {
         console.log(addCarMutation);
         const data = cache.readQuery({ query: GET_ALL_PERSONS_FROM_DB });
         console.log(data);

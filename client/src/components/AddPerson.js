@@ -22,7 +22,6 @@ const AddPerson = () => {
       },
       update: (cache, { data: { addPersonToDb } }) => {
         const data = cache.readQuery({ query: GET_ALL_PERSONS_FROM_DB });
-        console.log(addPersonToDb);
         cache.writeQuery({
           query: GET_ALL_PERSONS_FROM_DB,
           data: {
@@ -69,7 +68,7 @@ const AddPerson = () => {
           {/* <Form.Item> */}
           {() => (
             <Button type="primary" htmlType="submit">
-              Add Contact
+              Add Person
             </Button>
           )}
         </Form.Item>
