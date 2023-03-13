@@ -1,6 +1,6 @@
 import { personsDb, carsDb } from "../db/db.js";
 
-import { findOne } from "../util/util.js";
+import { findOne, findManyCars } from "../util/util.js";
 
 const typeDefs = `#graphql
   type Person {
@@ -22,6 +22,8 @@ const typeDefs = `#graphql
   type Query {
     getAllPersonsFromDb: [Person]
     getAllCarsFromDB: [Car]
+
+    getAllPersonCarsFromDB(id: String): [Car]
 
     getPersonFromDb(id: String): Person
     getCarFromDb(id: String): Car 
@@ -52,10 +54,15 @@ const resolvers = {
 
     getAllCarsFromDB: () => carsDb,
 
+    getAllPersonCarsFromDB: (root, args) => {
+      return findManyCars(carsDb, args.id);
+    },
+
     //Get One By Id
     getPersonFromDb: (root, args) => {
       return findOne(personsDb, args.id);
     },
+
     getCarFromDb: (root, args) => {
       return findOne(carsDb, args.id);
     },

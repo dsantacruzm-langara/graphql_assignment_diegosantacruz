@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Card } from "antd";
+import RemoveCar from "../../Button/RemoveCar";
 
 const CarCard = (props) => {
   const [id] = useState(props.Id);
@@ -9,7 +10,11 @@ const CarCard = (props) => {
   const [price] = useState(props.price);
   const [personId] = useState(props.ownerId);
 
-  return <Card type="inner" title={`${year} ${make} ${model} -> ${price}`} />;
+  return (
+    <Card type="inner" title={`${year} ${make} ${model} -> ${price}`}>
+      <RemoveCar id={id}/>
+    </Card>
+  );
 };
 
 export default CarCard;

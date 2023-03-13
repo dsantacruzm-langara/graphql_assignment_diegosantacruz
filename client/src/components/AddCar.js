@@ -33,11 +33,11 @@ const AddCar = () => {
     addCarMutation({
       variables: {
         id: uuidv4(),
-        year: "1980",
-        make: "Delorean",
-        model: "TT DMC",
-        price: "700000",
-        personId: "1",
+        year,
+        make,
+        model,
+        price,
+        personId,
       },
       update: (cache, { data: { addCarMutation } }) => {
         console.log(addCarMutation);

@@ -1,7 +1,6 @@
 import { useMutation } from "@apollo/client";
 
 import {
-  ADD_PERSON_TO_DB,
   REMOVE_PERSON,
   GET_ALL_PERSONS_FROM_DB,
 } from "../../Queries/queries";
@@ -9,8 +8,6 @@ import {
 import { DeleteOutlined } from "@ant-design/icons";
 
 const RemovePerson = ({ id }) => {
-  const [addPersonToDb] = useMutation(ADD_PERSON_TO_DB);
-
   const [removePerson] = useMutation(REMOVE_PERSON);
 
   const removeHandler = () => {
