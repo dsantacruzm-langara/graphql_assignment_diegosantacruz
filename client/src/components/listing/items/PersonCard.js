@@ -6,6 +6,8 @@ import { List } from "antd";
 import CarCard from "./CarCard";
 import RemovePerson from "../../Button/RemovePerson";
 
+import { Link } from "react-router-dom";
+
 const getStyles = () => ({
   cardLayout: {
     width: "500px",
@@ -42,6 +44,7 @@ const PersonCard = (props) => {
       )}>
       </List>
       <RemovePerson id={props.id}/>
+      <Link to={`/person/${props.id}`} style={styles.more}>Learn more</Link>
     </Card>
   );
 };

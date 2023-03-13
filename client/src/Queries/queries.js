@@ -44,8 +44,30 @@ const GET_ALL_PERSON_CARS_FROM_DB = gql`
   }
 `;
 
+const GET_PERSON_FROM_DB = gql`
+  query GetPersonFromDb($id: String!) {
+    getPersonFromDb(id: $id) {
+      id
+      firstName
+      lastName
+      cars {
+        id
+        year
+        make
+        model
+        price
+        personId
+      }
+    }
+  }
+`;
+
 const ADD_PERSON_TO_DB = gql`
-  mutation AddPersonToDb($id: String!, $firstName: String!, $lastName: String!) {
+  mutation AddPersonToDb(
+    $id: String!
+    $firstName: String!
+    $lastName: String!
+  ) {
     addPersonToDb(id: $id, firstName: $firstName, lastName: $lastName) {
       id
       firstName
@@ -97,7 +119,7 @@ const REMOVE_PERSON = gql`
       id
     }
   }
-`
+`;
 
 const REMOVE_CAR = gql`
   mutation RemoveCarFromDb($id: String!) {
@@ -105,12 +127,13 @@ const REMOVE_CAR = gql`
       id
     }
   }
-`
+`;
 
 export {
   GET_ALL_PERSONS_FROM_DB,
   GET_ALL_CARS_FROM_DB,
   GET_ALL_PERSON_CARS_FROM_DB,
+  GET_PERSON_FROM_DB,
   ADD_PERSON_TO_DB,
   ADD_CAR_TO_DB,
   REMOVE_PERSON,
