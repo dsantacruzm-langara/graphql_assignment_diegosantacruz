@@ -1,6 +1,6 @@
 import { personsDb, carsDb } from "../db/db.js";
 
-import { findOne, findManyCars } from "../util/util.js";
+import { findOne } from "../util/util.js";
 
 const typeDefs = `#graphql
   type Person {

@@ -4,6 +4,7 @@ import { Card } from "antd";
 import { List } from "antd";
 
 import CarCard from "./CarCard";
+import RemovePerson from "../../Button/RemovePerson";
 
 const getStyles = () => ({
   cardLayout: {
@@ -40,6 +41,7 @@ const PersonCard = (props) => {
 
       )}>
       </List>
+      <RemovePerson id={props.id}/>
     </Card>
   );
 };

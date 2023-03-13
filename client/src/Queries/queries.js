@@ -78,19 +78,18 @@ const ADD_CAR_TO_DB = gql`
 //   }
 // `
 
-// export const REMOVE_CONTACT = gql`
-//   mutation RemoveContact($id: String!) {
-//     removeContact(id: $id) {
-//       id
-//       firstName
-//       lastName
-//     }
-//   }
-// `
+const REMOVE_PERSON = gql`
+  mutation RemovePersonFromDb($id: String!) {
+    removePersonFromDb(id: $id) {
+      id
+    }
+  }
+`
 
 export {
   GET_ALL_PERSONS_FROM_DB,
   GET_ALL_CARS_FROM_DB,
   ADD_PERSON_TO_DB,
   ADD_CAR_TO_DB,
+  REMOVE_PERSON,
 };
