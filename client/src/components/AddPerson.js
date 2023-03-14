@@ -21,13 +21,13 @@ const AddPerson = () => {
         lastName,
       },
       update: (cache, { data: { addPersonToDb } }) => {
-        const data = cache.readQuery({ query: GET_ALL_PERSONS_FROM_DB });
+        const personList = cache.readQuery({ query: GET_ALL_PERSONS_FROM_DB });
         cache.writeQuery({
           query: GET_ALL_PERSONS_FROM_DB,
-          data: {
-            ...data,
+          personList: {
+            ...personList,
             getAllPersonsFromDb: [
-              ...data.getAllPersonsFromDb,
+              ...personList.getAllPersonsFromDb,
               { ...addPersonToDb, cars: [] },
             ],
           },

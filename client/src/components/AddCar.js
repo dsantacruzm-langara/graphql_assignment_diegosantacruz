@@ -8,7 +8,7 @@ import { GET_ALL_PERSONS_FROM_DB, ADD_CAR_TO_DB } from "../Queries/queries";
 import Dropdown from "./listing/OwnerDropdown";
 
 const AddCar = () => {
-  const [addCarMutation] = useMutation(ADD_CAR_TO_DB);
+  const [addCarToDb] = useMutation(ADD_CAR_TO_DB);
   const { loading, error, data } = useQuery(GET_ALL_PERSONS_FROM_DB);
 
   const [dropDownList, setDropDownList] = useState([]);
@@ -30,7 +30,7 @@ const AddCar = () => {
   const onFinish = (values) => {
     const { year, make, model, price, personId } = values;
 
-    addCarMutation({
+    addCarToDb({
       variables: {
         id: uuidv4(),
         year,
@@ -39,15 +39,14 @@ const AddCar = () => {
         price,
         personId,
       },
-      update: (cache, { data: { addCarMutation } }) => {
-        console.log(addCarMutation);
-        const data = cache.readQuery({ query: GET_ALL_PERSONS_FROM_DB });
-        console.log(data);
-        const personsCarsList = data.getAllPersonsFromDb.map((person) => {
-          if (person.id === addCarMutation.personId) {
+      update: (cache, { data: { addCarToDb } }) => {
+        const personList = cache.readQuery({ query: GET_ALL_PERSONS_FROM_DB });
+        const personsCarsList = personList.getAllPersonsFromDb.map((person) => {
+          if (person.id === addCarToDb.personId) {
+            console.log("this happened!")
             return {
               ...person,
-              cars: [...person.cars, { ...addCarMutation }],
+              cars: [...person.cars, { ...addCarToDb }],
             };
           }
           return person;
@@ -56,13 +55,14 @@ const AddCar = () => {
         cache.writeQuery({
           query: GET_ALL_PERSONS_FROM_DB,
           data: {
-            ...data,
-            getAllPersonsFromDb: [...personsCarsList],
+            getAllPersonsFromDb: [...personsCarsList]
           },
         });
       },
     });
   };
+
+
 
   return (
     <div>
